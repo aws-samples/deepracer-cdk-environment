@@ -25,9 +25,9 @@ FThe solution describes DeepRacer environment configuration using CDK to acceler
 
 In this solution, the user will login to the AWS console, the administrator can run the CDK script provided in GitHub described below or in the terminal after loading the code in their environment:
 
-1. Open Cloud9 in AWS Console
+1. Open Cloud9 in AWS Console. Use the following to create a typescript cdk project - https://cdkworkshop.com/20-typescript.html (for additional details)
 2. Load the CDK module from GitHub into Cloud9 environment 
-3. Configure the CDK module as described below
+3. Configure the CDK module as described in the blog.
 4. Open cdk.context.json file and inspect all the parameters 
 5. Modify the parameters as needed and run the CDK command with the intended persona to launch the configured environment suited for that persona
 
