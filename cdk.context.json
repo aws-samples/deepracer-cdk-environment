@@ -1,0 +1,7 @@
+{
+    "instanceType": "ml.t3.medium",
+    "bucketName": "deepracer-trainingexercise-us-east-1-",
+    "vpcCidr": "10.96.0.0/16",
+    "S3PathPrefix": "awsu-spl-dev/spl-227",
+    "S3ResourceBucket": "aws-training"
+}

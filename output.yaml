@@ -1,0 +1,720 @@
+Resources:
+  SandBoxBucket0B25F167:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: sandboxbucket-cdk
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: DeepRacerStack/SandBoxBucket/Resource
+  SandBoxBucketPolicyA73AC7E8:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: SandBoxBucket0B25F167
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetBucket*
+              - s3:GetObject*
+              - s3:List*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+            Resource:
+              - Fn::GetAtt:
+                  - SandBoxBucket0B25F167
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - SandBoxBucket0B25F167
+                        - Arn
+                    - /*
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: DeepRacerStack/SandBoxBucket/Policy/Resource
+  DeepRacerSandboxEFC24864:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.96.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Resource
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1Subnet1309F469:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.0.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - A
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet1/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1RouteTable2E358AB6:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet1/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1RouteTableAssociationE1BEE2D4:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1RouteTable2E358AB6
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1Subnet1309F469
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet1/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1DefaultRouteCB6F6D9C:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1RouteTable2E358AB6
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet1/DefaultRoute
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2SubnetDB4D8A4A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.1.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - A
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet2/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2RouteTableE8DFBE55:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet2/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2RouteTableAssociation6DC174EB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2RouteTableE8DFBE55
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2SubnetDB4D8A4A
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet2/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2DefaultRouteB8AE175C:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2RouteTableE8DFBE55
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - ASubnet2/DefaultRoute
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1SubnetBCFA1A24:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.2.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - B
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet1/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1RouteTable2B6F8423:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet1/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1RouteTableAssociation8BA0F953:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1RouteTable2B6F8423
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1SubnetBCFA1A24
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet1/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1DefaultRouteD11E427F:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1RouteTable2B6F8423
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet1/DefaultRoute
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2SubnetD7B9E4B8:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.3.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - B
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet2/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2RouteTable050C2742:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet2/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2RouteTableAssociationCE4249CA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2RouteTable050C2742
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2SubnetD7B9E4B8
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet2/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2DefaultRouteAAD7BFDA:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2RouteTable050C2742
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - BSubnet2/DefaultRoute
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1SubnetF28682B6:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.4.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - C
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet1/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1RouteTableE9A977A3:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet1/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1RouteTableAssociation52F1AE70:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1RouteTableE9A977A3
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1SubnetF28682B6
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet1/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1DefaultRouteF4E4AEE2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1RouteTableE9A977A3
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet1/DefaultRoute
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2Subnet94C2E12B:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.5.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - C
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet2/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2RouteTableED6FD7E0:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet2/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2RouteTableAssociation5C67BDF7:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2RouteTableED6FD7E0
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2Subnet94C2E12B
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet2/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2DefaultRoute41887F3A:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2RouteTableED6FD7E0
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - CSubnet2/DefaultRoute
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1SubnetF22D5A04:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.6.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - D
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet1/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1RouteTableC596CA84:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet1
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet1/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1RouteTableAssociation5531FEDA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1RouteTableC596CA84
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1SubnetF22D5A04
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet1/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1DefaultRoute258CBECA:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1RouteTableC596CA84
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet1/DefaultRoute
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2Subnet5B334DF6:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.96.7.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Deepracer Sandbox - Public Subnet - D
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet2/Subnet
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2RouteTable2C3B2FA6:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet2/RouteTable
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2RouteTableAssociation13E42C44:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2RouteTable2C3B2FA6
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2Subnet5B334DF6
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet2/RouteTableAssociation
+  DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2DefaultRouteFEF9C63D:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2RouteTable2C3B2FA6
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    DependsOn:
+      - DeepRacerSandboxVPCGWF051D97C
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/Deepracer Sandbox - Public Subnet - DSubnet2/DefaultRoute
+  DeepRacerSandboxIGW692BB442:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: DeepRacerStack/DeepRacer Sandbox
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/IGW
+  DeepRacerSandboxVPCGWF051D97C:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      InternetGatewayId:
+        Ref: DeepRacerSandboxIGW692BB442
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacer Sandbox/VPCGW
+  SagemakerInstanceSecurityGroup6C30BF6B:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Sagemaker Security Group
+      SecurityGroupEgress:
+        - CidrIp: 10.96.0.0/16
+          Description: from 10.96.0.0/16:1-65535
+          FromPort: 1
+          IpProtocol: tcp
+          ToPort: 65535
+        - CidrIp: 10.96.0.0/16
+          Description: from 10.96.0.0/16:UDP 1-65535
+          FromPort: 1
+          IpProtocol: udp
+          ToPort: 65535
+      SecurityGroupIngress:
+        - CidrIp: 10.96.0.0/16
+          Description: from 10.96.0.0/16:1-65535
+          FromPort: 1
+          IpProtocol: tcp
+          ToPort: 65535
+        - CidrIp: 10.96.0.0/16
+          Description: from 10.96.0.0/16:UDP 1-65535
+          FromPort: 1
+          IpProtocol: udp
+          ToPort: 65535
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+    Metadata:
+      aws:cdk:path: DeepRacerStack/SagemakerInstanceSecurityGroup/Resource
+  S3EndpointD570F362:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName:
+        Fn::Join:
+          - ""
+          - - com.amazonaws.
+            - Ref: AWS::Region
+            - .s3
+      VpcId:
+        Ref: DeepRacerSandboxEFC24864
+      PolicyDocument:
+        Statement:
+          - Action: s3:*
+            Effect: Allow
+            Principal:
+              AWS: "*"
+            Resource: "*"
+        Version: "2012-10-17"
+      RouteTableIds:
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1RouteTable2E358AB6
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet2RouteTableE8DFBE55
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet1RouteTable2B6F8423
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetBSubnet2RouteTable050C2742
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet1RouteTableE9A977A3
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetCSubnet2RouteTableED6FD7E0
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet1RouteTableC596CA84
+        - Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetDSubnet2RouteTable2C3B2FA6
+      VpcEndpointType: Gateway
+    Metadata:
+      aws:cdk:path: DeepRacerStack/S3Endpoint/Resource
+  SageMakerNotebookInstanceRoleD9206DA2:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - robomaker.amazonaws.com
+                - sagemaker.amazonaws.com
+        Version: "2012-10-17"
+      Description: SageMaker Notebook instance IAM role in AWS CDK
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonSageMakerFullAccess
+    Metadata:
+      aws:cdk:path: DeepRacerStack/SageMakerNotebookInstanceRole/Resource
+  DeepRacerPolicy599E4B0D:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - iam:GetRole
+              - s3:*
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: DeepRacerPolicy599E4B0D
+      Roles:
+        - Ref: SageMakerNotebookInstanceRoleD9206DA2
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacerPolicy/Resource
+  NotebookLifecycleConfig:
+    Type: AWS::SageMaker::NotebookInstanceLifecycleConfig
+    Properties:
+      NotebookInstanceLifecycleConfigName: NotebookLifecycleConfig
+      OnCreate:
+        - Content:
+            Fn::Base64: |-
+              #!/bin/bash 
+              cd /home/ec2-user/SageMaker
+              nohup curl -O https://us-west-2-aws-training.s3.amazonaws.com/awsu-spl-dev/spl-227/scripts/rl_deepracer_robomaker_coach.ipynb
+              nohup curl -O https://us-west-2-aws-training.s3.amazonaws.com/awsu-spl-dev/spl-227/scripts/rl_deepracer_robomaker_coach.zip
+              nohup unzip rl_deepracer_robomaker_coach.zip
+              nohup chown ec2-user:ec2-user -R /home/ec2-user/SageMakernotebook_lifecycle.sh
+    Metadata:
+      aws:cdk:path: DeepRacerStack/NotebookLifecycleConfig
+  DeepRacerSagemakerSandbox:
+    Type: AWS::SageMaker::NotebookInstance
+    Properties:
+      InstanceType: ml.t3.medium
+      RoleArn:
+        Fn::GetAtt:
+          - SageMakerNotebookInstanceRoleD9206DA2
+          - Arn
+      LifecycleConfigName:
+        Fn::GetAtt:
+          - NotebookLifecycleConfig
+          - NotebookInstanceLifecycleConfigName
+      NotebookInstanceName: DeepRacerSagemakerSandbox
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - SagemakerInstanceSecurityGroup6C30BF6B
+            - GroupId
+      SubnetId:
+        Ref: DeepRacerSandboxDeepracerSandboxPublicSubnetASubnet1Subnet1309F469
+      Tags:
+        - Key: Name
+          Value: DeepRacer Sandbox
+    Metadata:
+      aws:cdk:path: DeepRacerStack/DeepRacerSagemakerSandbox
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/21RTW+DMAz9LbuHbO2q7dyhqqo0TQimXqcQTOcCMSLOKhTx3xcKHZu0k5+fP96zvJabjXy4Uxcb6aKKasylz1jpSgTqw9tH6V+croBFXJoZTSGhGnW/0FM+CNBr6Y+tHivHJBaJy0Mhc7mZliwoJcfwrvIaFn7httaSRsVI5qd5BAfD0IXOvWK4qH6WmbMtB++fDRgWGWjXIff7jlx7FfhDzAPB6M4ULaHhedMtHQSqRvqUJnvXuNx8u9aqEzSqgk76wL4RQ05UHYxlZTS8Ygm61zXEZEo8iX9ahkGkYMl1epL5hcNQgeP9gzBUgDzb+6/Vk1w9h4edLWLUOcPYgEyn+A1dn7AGzAEAAA==
+    Metadata:
+      aws:cdk:path: DeepRacerStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+Parameters:
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+
