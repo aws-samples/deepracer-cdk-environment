@@ -15,31 +15,6 @@ import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from '
 export class DeepRacerStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-  
-  // const BucketName = new cdk.CfnParameter(this, "BucketName", {
-  //       type: "String",
-  //       description: "Create and use a bucket created via this template for model storage."});
-  
-  // const s3Bucket = new s3.Bucket(this, 'SandBoxBucket', {
-  //     //objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
-  //     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-  //     bucketName: `${this.node.tryGetContext("bucketName")}${this.account}`,
-  //     //encryptionKey: new kms.Key(this, 's3BucketKMSKey'),
-  //     encryption: BucketEncryption.S3_MANAGED,
-  //     removalPolicy: RemovalPolicy.DESTROY,
-  //   });
-
-  //   // s3Bucket.grantRead(new iam.AccountRootPrincipal());
-  // s3Bucket.addToResourcePolicy(new PolicyStatement({
-  //   effect: Effect.DENY,
-  //   actions: ['s3:*'],
-  //   principals: [new StarPrincipal()],
-  //   resources: [s3Bucket.bucketArn, `${s3Bucket.bucketArn}/*`],
-  //   conditions: {
-  //     "Bool": { "aws:SecureTransport": false }
-  //   }
-  // }));  
-  
     
   const vpcCidr = process.env.VPC_CIDR;  
   const vpc = new ec2.Vpc(this, 'DeepRacer Sandbox', {
@@ -134,36 +109,7 @@ export class DeepRacerStack extends cdk.Stack {
       ec2.Peer.ipv4('10.96.0.0/16'),
       ec2.Port.udpRange(1,65535),
     );
-    
-    
-  // Define a S3 endpoint for all the S3 traffic during training
-  // const S3Endpoint = new ec2.GatewayVpcEndpoint(this, 'S3Endpoint', {
-  //       service:  ec2.GatewayVpcEndpointAwsService.S3,
-  //       vpc,
-  //   });
-    
-  // const allowAccessToS3 = new iam.PolicyStatement({
-  //     actions: ['s3:*'],
-  //     effect: iam.Effect.ALLOW,
-  //     principals: [new iam.AnyPrincipal()],
-  //     resources: ['*'],
-  //   });
-  //   // attach the policy statement to the vpce
-  //   S3Endpoint.addToPolicy(allowAccessToS3);
   
-    
-  
-  // Create DeepRacer Policy 
-    // const DeepRacerPolicy = new iam.PolicyDocument({
-    //   statements: [
-    //     new iam.PolicyStatement({
-    //       resources: ['*'],
-    //       actions: ['s3:*',
-    //                 'iam:GetRole'
-    //                 ],
-    //     }),
-    //   ],
-    // });
 
   // Sagemaker is going to be making calls to Robomaker to launch the sim, and Sagemaker to launch the training insance. 
   // This requries AWS credentals. A Principal of sagemaker and robomaker needs to be assiged as both service will assuming this role. Default Sagemaker full access and s3 access is needed.
